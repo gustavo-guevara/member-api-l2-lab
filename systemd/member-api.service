@@ -1,0 +1,20 @@
+# Installed by scripts/install.sh (placeholders replaced) to /etc/systemd/system/member-api.service
+[Unit]
+Description=Member API (L2 support lab)
+After=network-online.target postgresql.service
+# More than 5 failed starts in 60 s -> systemd gives up (state "failed", start-limit-hit)
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__DIR__
+ExecStart=/bin/bash __DIR__/scripts/start.sh
+Restart=on-failure
+RestartSec=3
+# Give in-flight requests a moment on stop/restart
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
